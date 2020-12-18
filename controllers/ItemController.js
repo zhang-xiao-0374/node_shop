@@ -72,3 +72,21 @@ exports.delete = (req, res) => {
     });   
     con.end();
 }
+
+
+exports.search = (req, res) => {
+    let item_name=req.query.item_name;
+    //查找语句的书写
+    const sql = "SELECT * FROM items WHERE name LIKE '%" + item_name + "%';";
+    
+    const con = mysql.createConnection(config.mysql)
+    con.connect();
+    // const con = db.connect();
+    con.query(sql,  (err,results) => {
+        console.log(sql);
+        if (err) throw err;
+        let data={items:results,err:err};
+        res.render("item/index",data);
+    });   
+    con.end();
+}
